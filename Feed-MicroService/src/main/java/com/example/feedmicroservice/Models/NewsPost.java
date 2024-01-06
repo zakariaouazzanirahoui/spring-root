@@ -11,12 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "guideline")
-public class GuidelinePost extends Post {
+@Table(name = "news")
+public class NewsPost extends Post {
     @ElementCollection
     private List<String> tags;
     //Media
-
     private String media;
 
 }

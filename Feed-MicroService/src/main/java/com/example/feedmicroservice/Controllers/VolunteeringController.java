@@ -7,6 +7,7 @@ import com.example.feedmicroservice.DTO.VolunteeringPostWithUserDTO;
 import com.example.feedmicroservice.Models.Comment;
 import com.example.feedmicroservice.Models.HelpPost;
 import com.example.feedmicroservice.Models.VolunteeringPost;
+import com.example.feedmicroservice.Repositories.VolunteeringRepository;
 import com.example.feedmicroservice.Services.CommentService;
 import com.example.feedmicroservice.Services.HelpService;
 import com.example.feedmicroservice.Services.PostService;
@@ -29,13 +30,16 @@ public class VolunteeringController {
         private final VolunteeringService volunteeringService;
         private final PostService postService;
         private final CommentService commentService;
+        private final VolunteeringRepository volunteeringRepository;
 
 
         @Autowired
-        public VolunteeringController(VolunteeringService volunteeringService,PostService postService ,CommentService commentService) {
+        public VolunteeringController(VolunteeringService volunteeringService,PostService postService ,CommentService commentService,
+                                      VolunteeringRepository volunteeringRepository) {
             this.volunteeringService = volunteeringService;
             this.postService = postService ;
             this.commentService = commentService;
+            this.volunteeringRepository = volunteeringRepository;
         }
 
 
@@ -119,6 +123,15 @@ public class VolunteeringController {
             }
 
         }
+
+    @RequiredRole({"ADMIN","USER"})
+    @GetMapping("/changeStatus/{postId}")
+    public void changePostStatus(@PathVariable Long postId){
+        VolunteeringPost volunteeringPost = volunteeringService.findById(postId).orElse(null);;
+        assert volunteeringPost != null;
+        volunteeringPost.toggleIsStillNeeded();
+        volunteeringRepository.save(volunteeringPost);
+    }
     }
 
 

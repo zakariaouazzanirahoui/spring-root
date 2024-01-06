@@ -37,7 +37,9 @@ public class VolunteeringService {
             this.minioService = minioService ;
         }
 
-
+        public Optional<VolunteeringPost> findById(Long posId){
+            return volunteeringRepository.findById(posId);
+        }
         public List<VolunteeringPostWithUserDTO> getAllVolunteeringPosts() {
             List<VolunteeringPost> volunteeringPosts  = volunteeringRepository.findAll();
             return volunteeringPosts.stream()

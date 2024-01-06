@@ -21,6 +21,8 @@ public class VolunteeringPost extends Post {
     public VolunteeringPost(){this.isConsumed=true; }
 
     private String media;
-
+    public void toggleIsStillNeeded() {
+        this.isConsumed = !this.isConsumed;
+    }
 
 }

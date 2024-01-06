@@ -7,6 +7,7 @@ import com.example.feedmicroservice.Models.AnnouncementPost;
 import com.example.feedmicroservice.Models.Comment;
 import com.example.feedmicroservice.Models.HelpPost;
 import com.example.feedmicroservice.Models.Post;
+import com.example.feedmicroservice.Repositories.HelpRepository;
 import com.example.feedmicroservice.Services.CommentService;
 import com.example.feedmicroservice.Services.HelpService;
 import com.example.feedmicroservice.Services.PostService;
@@ -31,13 +32,16 @@ public class HelpController {
     private final HelpService helpService;
     private final PostService postService;
     private final CommentService commentService;
+    private final HelpRepository helpRepository;
 
 
     @Autowired
-    public HelpController(HelpService helpService,PostService postService ,CommentService commentService) {
+    public HelpController(HelpService helpService,PostService postService ,CommentService commentService,
+                          HelpRepository helpRepository) {
         this.helpService = helpService;
         this.postService = postService ;
         this.commentService = commentService;
+        this.helpRepository = helpRepository;
     }
 
 
@@ -119,6 +123,14 @@ public class HelpController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the comment ");
         }
 
+    }
+    @RequiredRole({"ADMIN","USER"})
+    @GetMapping("/changeStatus/{postId}")
+    public void changePostStatus(@PathVariable Long postId){
+        HelpPost helpPost = helpService.findById(postId).orElse(null);;
+        assert helpPost != null;
+        helpPost.toggleIsStillNeeded();
+        helpRepository.save(helpPost);
     }
 
 

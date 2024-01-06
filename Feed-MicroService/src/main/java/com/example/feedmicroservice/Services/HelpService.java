@@ -24,7 +24,9 @@ public class HelpService {
         this.userClient = userClient;
         this.minioService = minioService ;
     }
-
+    public Optional<HelpPost> findById(Long posId){
+        return helpRepository.findById(posId);
+    }
 
     public List<HelpPostWithUserDTO> getAllHelpPosts() {
         List<HelpPost> helpPosts = helpRepository.findAll();
