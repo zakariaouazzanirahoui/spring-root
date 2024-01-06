@@ -9,11 +9,13 @@ spring:
             allowedOrigins: '*'
             allowedHeaders: '*'
             allowedMethods:
-              - POST
               - GET
-              - DELETE
+              - POST
               - PUT
+              - DELETE
         add-to-simple-url-handler-mapping: true
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
 
 
 server:
